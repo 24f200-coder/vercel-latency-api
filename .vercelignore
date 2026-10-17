@@ -1,0 +1,8 @@
+# Not uploaded to Vercel (local tunnel state, logs, caches, local test harness)
+__pycache__/
+*.pyc
+.vercel/
+.tunnel-url
+tunnel.out.log
+tunnel.err.log
+test_analytics_local.py

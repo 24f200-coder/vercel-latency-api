@@ -27,7 +27,8 @@ def post(path, body=None, headers=None, method="POST"):
         return {key.lower(): value for key, value in mapping.items()}
 
     try:
-        with urllib.request.urlopen(req, timeout=20) as resp:
+        # 45s: the first call after a fresh deploy can hit a cold serverless start
+        with urllib.request.urlopen(req, timeout=45) as resp:
             raw = resp.read()
             try:
                 parsed = json.loads(raw) if raw.strip() else {}

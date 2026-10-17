@@ -6,16 +6,21 @@ between calls, so a fresh randomized batch always produces fresh numbers.
 
 ## Deployed endpoint URL
 
-**https://handling-dimension-wars-lady.trycloudflare.com/analytics**
+**https://vercel-latency-api-liart-zeta.vercel.app/analytics**  (Vercel production, scope `prashant-8d6a`, project `vercel-latency-api`)
 
-> The URL is served by a Cloudflare quick tunnel in front of the FastAPI app
-> running on this machine (`.\up.ps1` starts both and rewrites `.tunnel-url`;
-> a restart of the tunnel issues a *new* URL — re-read `.tunnel-url`).
+Redeploy after a code change:
 
-The same code is also pushed to `main` of this repository, where it is ready to
-deploy on Vercel (project `vercel-latency-api` is already linked via
-`.vercel/project.json`; `vercel deploy --token <token>` or a connected Git
-integration will publish it at `https://vercel-latency-api.vercel.app/analytics`).
+```powershell
+vercel deploy --prod --yes          # from this directory (already linked, CLI already authed)
+```
+
+> Note: the project's *non-production* URLs (`vercel-latency-nnoqs20vi-…vercel.app`,
+> `vercel-latency-api-prashant-8d6a.vercel.app`) sit behind Vercel Authentication;
+> the production alias above is the public one — use it.
+
+A Cloudflare quick tunnel in front of the same app (`.\up.ps1` writes the current
+URL to `.tunnel-url`) is kept running as a fallback mirror:
+`https://handling-dimension-wars-lady.trycloudflare.com/analytics`.
 
 ## Auth
 
@@ -82,11 +87,11 @@ python test_analytics_local.py https://<tunnel-host>       # deployed URL
 ```
 
 ```powershell
-curl -X POST https://handling-dimension-wars-lady.trycloudflare.com/analytics `
+curl -X POST https://vercel-latency-api-liart-zeta.vercel.app/analytics `
      -H "Content-Type: application/json" `
      -d '{\"events\": [{\"user\":\"alice\",\"amount\":42.5,\"ts\":1700000000}]}'
 # 401 - key missing
-curl -X POST https://handling-dimension-wars-lady.trycloudflare.com/analytics `
+curl -X POST https://vercel-latency-api-liart-zeta.vercel.app/analytics `
      -H "Content-Type: application/json" -H "X-API-Key: ak_h609yeskd3fjyeyppukt11vx" `
      -d '{\"events\": [{\"user\":\"alice\",\"amount\":42.5,\"ts\":1700000000},{\"user\":\"bob\",\"amount\":-5,\"ts\":1700000001}]}'
 # 200 - {"email":"24f2005949@ds.study.iitm.ac.in","total_events":2,"unique_users":2,"revenue":42.5,"top_user":"alice"}

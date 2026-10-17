@@ -2,3 +2,6 @@ __pycache__/
 *.pyc
 .vercel/
 .vercel
+.tunnel-url
+tunnel.out.log
+tunnel.err.log
